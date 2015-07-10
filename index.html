@@ -1,5 +1,41 @@
 <html>
-  <head></head>
+  <head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.2.min.js"></script>
+    <style>
+      h2 {
+        text-align: center;
+      }
+    </style>
+  </head>
   <body>
+  <script type="text/javascript">
+
+    function draw(data) {
+      console.table(data);
+      "use strict";
+      var margin = 75,
+          width = 1400 - margin,
+          height = 600 - margin;
+
+      d3.select('body').append('h2').text('Baby Boomer Self-Descriptors');
+      var svg = d3.select("body")
+        .append("svg")
+          .attr("width", width + margin)
+          .attr("height", height + margin)
+        .append('g')
+            .attr('class','chart');
+
+      var chart = new dimple.chart(svg, data);
+      var x = chart.addCategoryAxis("x", ["Adjective"]);
+      var y = chart.addMeasureAxis("y", "Percentage");
+      y.tickFormat = "%";
+      y.overrideMax = 1.0;
+      chart.addSeries(null, dimple.plot.bar);
+      chart.draw();
+    }
+
+    d3.csv('boomers.csv', draw);
+  </script>
   </body>
 </html>
